@@ -3,10 +3,12 @@ package com.olsystem.spring_curso.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.olsystem.spring_curso.domain.Categoria;
 import com.olsystem.spring_curso.repositories.CategoriaRepository;
+import com.olsystem.spring_curso.services.exceptions.DataIntegrityException;
 import com.olsystem.spring_curso.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -31,6 +33,17 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+		
+		try {
+		repo.deleteById(id);
+		}
+		catch(DataIntegrityViolationException d) {
+			throw new DataIntegrityException("Não é possivel excluir uma Categoria vinculada à um ou mais produtos.");
+		}
 	}
 
 }
