@@ -1,5 +1,6 @@
 package com.olsystem.spring_curso.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class CategoriaService {
 				"Objeto não encontrado ! ID: " + id + ", Tipo: " + Categoria.class.getName()));
 
 	}
+	
+	public List<Categoria> findAll() {
+	
+		return repo.findAll();
+	}
 
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
@@ -45,5 +51,7 @@ public class CategoriaService {
 			throw new DataIntegrityException("Não é possivel excluir uma Categoria vinculada à um ou mais produtos.");
 		}
 	}
+
+	
 
 }
