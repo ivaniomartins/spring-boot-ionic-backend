@@ -1,12 +1,19 @@
 package com.olsystem.spring_curso.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.olsystem.spring_curso.domain.Cliente;
+import com.olsystem.spring_curso.dto.ClienteDTO;
 import com.olsystem.spring_curso.repositories.ClienteRepository;
+import com.olsystem.spring_curso.services.exceptions.DataIntegrityException;
 import com.olsystem.spring_curso.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -23,4 +30,41 @@ public class ClienteService {
 
 	}
 
+	public List<Cliente> findAll() {
+
+		return repo.findAll();
+	}
+
+	public Cliente update(Cliente obj) {
+		// incluir a lógica de atualização com base no registro do banco de dados.
+		Cliente newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException d) {
+			throw new DataIntegrityException("Não é possivel excluir um Cliente porquê há entidades relacionadas");
+		}
+	}
+
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
+
+	// metodo auxiliar que instancia um cliente apartir de um DTO
+	public Cliente fromDTO(ClienteDTO objDTO) {
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+	}
+
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
+	}
 }
