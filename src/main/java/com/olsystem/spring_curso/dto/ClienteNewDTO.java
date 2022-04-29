@@ -2,30 +2,54 @@ package com.olsystem.spring_curso.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.olsystem.spring_curso.services.validations.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
-	
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
+	@NotEmpty(message = "O nome do cliente é obrigatório")
+	@Length(min = 5, max = 120, message = "O nome do cliente deve estar entre 5 e 120 carácteres")
 	private String nome;
+
+	@NotEmpty(message = "É necessário informar um email")
+	@Email(message = "e-mail inválido")
 	private String email;
+
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String cpfOuCnpj;
-	
+
 	private Integer tipo;
+
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String logradouro;
+
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String numero;
+
 	private String complemento;
-	private String bairro;
-	private String cep;
 	
+	@NotEmpty(message = "Preenchimento obrigatório!")
+	private String bairro;
+	
+	@NotEmpty(message = "Preenchimento obrigatório!")
+	private String cep;
+
+	@NotEmpty(message="Preenchimento obrigatório!")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
-	
+
 	private Integer cidadeId;
-	
+
 	public ClienteNewDTO() {
-		
+
 	}
 
 	public String getNome() {
@@ -131,8 +155,5 @@ public class ClienteNewDTO implements Serializable {
 	public void setCidadeId(Integer cidadeId) {
 		this.cidadeId = cidadeId;
 	}
-	
-	
-	
 
 }
