@@ -7,5 +7,8 @@ import com.olsystem.spring_curso.domain.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+	
+	@org.springframework.transaction.annotation.Transactional
+	Cliente findByEmail(String email);
 
 }
