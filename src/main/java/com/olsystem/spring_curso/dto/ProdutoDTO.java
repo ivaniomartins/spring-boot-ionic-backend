@@ -2,6 +2,8 @@ package com.olsystem.spring_curso.dto;
 
 import java.io.Serializable;
 
+import com.olsystem.spring_curso.domain.Produto;
+
 public class ProdutoDTO implements Serializable{
 	
 	
@@ -16,11 +18,11 @@ public class ProdutoDTO implements Serializable{
 	}
 
 
-	public ProdutoDTO(Integer id, String nome, Double preco) {
+	public ProdutoDTO(Produto obj) {
 		super();
-		this.id = id;
-		this.nome = nome;
-		this.preco = preco;
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.preco = obj.getPreco();
 	}
 
 
