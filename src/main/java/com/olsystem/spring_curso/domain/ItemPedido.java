@@ -35,6 +35,10 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 	}
 
+	public double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
+	
 	@JsonIgnore
 	public Pedido gePedido() {
 		return id.getPedido();
@@ -93,6 +97,6 @@ public class ItemPedido implements Serializable{
 		return Objects.equals(id, other.id);
 	}
 
-	
+
 	
 }
