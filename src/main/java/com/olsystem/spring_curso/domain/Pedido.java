@@ -1,8 +1,11 @@
 package com.olsystem.spring_curso.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -130,4 +133,29 @@ public class Pedido implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		SimpleDateFormat sd = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(sd.format(getInstante()));
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do pagamento");
+		builder.append(getPagamento().getEstado().getDescricao());
+		builder.append("\n Detalhes: \n");
+		for (ItemPedido it: getItens()) {
+			builder.append(it.toString());
+		}
+		
+		builder.append("Valor Total: ");
+		builder.append(nf.format(getValorTotal()));
+		return builder.toString();
+	}
+
+	
+	
 }
